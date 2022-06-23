@@ -1,0 +1,31 @@
+.date {
+    background-color: navy;
+    color: white;
+    display: inline-block;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+body {
+    background-color: rgb(255, 254, 245);
+}
+
+#container {
+    width: 80%;
+    margin: 16px auto;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    margin: 0px auto;
+}
+
+th {
+    background-color: coral;
+    font-size: 20px;
+}
+
+td {
+    background-color: rgb(29, 109, 82);
+}

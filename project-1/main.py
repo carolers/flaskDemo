@@ -1,7 +1,9 @@
+
 from datetime import datetime
 from functools import total_ordering
 from unittest import result
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+# from requests import request
 from pm25 import get_pm25
 
 import h11
@@ -56,9 +58,13 @@ def stock():
     return render_template('./stock.html', stocks=stocks)
 
 
-@app.route('/pm25/<sort>')
-@app.route('/pm25')
-def pm25(sort=None):
+@app.route('/pm25', methods=['GET', 'POST'])
+def pm25():
+    sort = False
+    if(request.method == 'POST'):
+        if request.form.get('sort'):
+            sort = True
+
     today = getToday()
     columns, values = get_pm25(sort)
     return render_template('./pm25.html', **locals())

@@ -33,10 +33,13 @@ td {
     #container {
         width: 100%;
     }
+    table {
+        width: 90%;
+        }
 }
 input[type="submit"] {
     margin-bottom: 6px;
-    background-color: chartreuse;
+    background-color: rgb(143, 188, 250);
     border: 0px;
     border-radius: 6px;
     width: 60px;

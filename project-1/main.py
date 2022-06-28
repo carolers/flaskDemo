@@ -1,13 +1,12 @@
 
 from datetime import datetime
 from functools import total_ordering
+from multiprocessing.sharedctypes import Value
 from unittest import result
 from flask import Flask, render_template, request
 # from requests import request
-from pm25 import get_pm25
-
-import h11
-from sqlalchemy import values
+from scrape.pm25 import get_pm25
+import json
 
 app = Flask(__name__)
 
@@ -56,6 +55,20 @@ def stock():
         print(stock['分類'], stock['指數'])
 
     return render_template('./stock.html', stocks=stocks)
+
+
+@app.route('/pm25chart')
+def pm25chart():
+    return render_template('./pm25chart.html')
+
+
+@app.route('/pm25-json', methods=['GET', 'POST'])
+def pm25_json():
+    columns, values = get_pm25(False)
+    stationName = [value[1] for value in values]
+    result = [value[2] for value in values]
+    data = {'stationName': stationName, 'result': result}
+    return json.dumps(data, ensure_ascii=False)
 
 
 @app.route('/pm25', methods=['GET', 'POST'])

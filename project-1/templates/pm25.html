@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pm2.5全台資訊</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js
+"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='./pm25.css')}}">
 
 </head>
@@ -13,12 +16,16 @@
     <h1>pm2.5全台資訊</h1>
     <p class="date">目前時間:{{today}}</p>
     <form action="/pm25" method="POST">
-        <input type="submit" name="sort" value="排序"></input>
+        <input type="submit" name="sort" value="排序" id="sort"></input>
         <input type="submit" name="update" value="更新"></input>
     </form>
     {%if values%}
     <!-- {{columns}}
     {{values}} -->
+    <div style="text-align:left">
+        <a href="/">首頁</a>
+        <a href="/pm25chart">圖表</a>
+    </div>
     <table border="1">
         <thead>
             <tr>
@@ -41,5 +48,8 @@
     <h2>讀取失敗</h2>
     {%endif%}
     </div>
+    <script>
+        $('.date').css('background-color','#ABC9FF');
+    </script>
 </body>
 </html>

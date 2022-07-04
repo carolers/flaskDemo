@@ -11,8 +11,8 @@ drawPM25()
              dataType:'json',
              success:(data)=>{
                  console.log(data);
-                // drawChart1(data);
-                drawChart2(data);
+                drawChart1(data);
+                // drawChart2(data);
              
              
               },error:()=>{
@@ -32,7 +32,20 @@ drawPM25()
                 title: {
                     text: 'PM2.5 數據圖'
                 },
-                tooltip: {},
+                toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'left',
+            top: 'center',
+            feature: {
+                magicType: { show: true, type: ['line', 'bar', 'tiled'] },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
                 legend: {
                     data: ['站點']
                 },

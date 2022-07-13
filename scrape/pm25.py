@@ -5,12 +5,58 @@ url = 'https://sta.ci.taiwan.gov.tw/STA_AirQuality_v2/v1.0/Datastreams?$expand=T
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+# 全域變數
+df = None
+
+
+def get_city_pm25(city):
+    global df
+    stationName, result = [], []
+    try:
+        datas = df.groupby('city').get_group(
+            city)[['stationName', 'result']].values.tolist()
+
+        stationName, result = list(zip(*datas))
+    except Exception as e:
+        print(e)
+
+    return stationName, result
+
+
+def get_all_city():
+    global df
+    citys = []
+    try:
+        citys = sorted(list(set(df['city'])))
+    except Exception as e:
+        print(e)
+
+    return citys
+
+
+def get_six_pm25():
+    global df
+    six_citys = ['臺北市', '新北市', '桃園市', '臺中市', '臺南市', '高雄市']
+    result = []
+    try:
+        for city in six_citys:
+            mean = round(df.groupby('city').get_group(
+                city)['result'].mean(), 2)
+            print(city, mean)
+            result.append(mean)
+
+    except Exception as e:
+        print(e)
+
+    return six_citys, result
+
 
 def get_pm25(sort=False):
+    global df
     columns, values = None, None
     try:
         print('讀取中')
-        columns = ['city', 'stationName', 'result', 'resultTime']
+        # columns = ['city', 'stationName', 'result', 'resultTime']
         columns = ['城市', '站點', 'pm2.5值', '更新時間']
         datas = pd.read_json(url)['value']
         values = []
@@ -23,6 +69,9 @@ def get_pm25(sort=False):
                 resultTime).strftime('%Y-%m-%d %H:%M:%S')
 
             values.append([city, stationName, result, resultTime])
+        df = pd.DataFrame(
+            values, columns=['city', 'stationName', 'result', 'resultTime'])
+
         if sort:
             values = sorted(values, key=lambda x: x[2], reverse=True)
         print('讀完')
@@ -32,5 +81,10 @@ def get_pm25(sort=False):
     return columns, values
 
 
+get_pm25()
+
 if __name__ == '__main__':
     print(get_pm25())
+    print(get_six_pm25())
+    print(get_all_city())
+    print(get_city_pm25('高雄市'))
